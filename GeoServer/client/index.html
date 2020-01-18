@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <title>GeoServer</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <ul id="nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/admin">Modify</a></li>
+    </ul> 
+    <div id="map"></div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src='./map.js'></script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLMM_sm9suvkQ5FfHhyjd6R7mhpnHZrNk&callback=initMap">
+    </script>
+
+  </body>
+</html>
