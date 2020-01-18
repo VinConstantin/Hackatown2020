@@ -2,13 +2,13 @@ import iota
 from pprint import pprint
 
 # Seed for the webserver. 
-seedSender = 'NHDMTKGDGXXFGVIWMQG9SXBTLOTGUZPRUFVQIBCYRKXWOJKCPLSPIYSBT9VSAHKXBEKBYFXGUBDBNNWZL'
+seedReceiver = 'NHDMTKGDGXXFGVIWMQG9SXBTLOTGUZPRUFVQIBCYRKXWOJKCPLSPIYSBT9VSAHKXBEKBYFXGUBDBNNWZL'
 
 # Devnet node to connect to Tangle network
 devnetNode = "https://nodes.devnet.iota.org:443"
 
 # Initializing api
-api = iota.Iota(devnetNode, seed = seedSender)
+api = iota.Iota(devnetNode, seed = seedReceiver)
 
 print("Checking for total balance. This may take some time...")
 
