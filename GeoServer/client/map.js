@@ -16,7 +16,12 @@ function initMap() {
 
         map = new google.maps.Map(document.getElementById('map'), {zoom: 6, center: center});
         clients.forEach(client => {
-            var marker = new google.maps.Marker({position: client[1].point, icon: 'car.png', map: map});
+            var image = {
+                url: 'car.png',
+                anchor: new google.maps.Point(8, 8)
+              };
+            
+            var marker = new google.maps.Marker({position: client[1].point, icon: image, map: map});
             let date = new Date(client[1].time * 60000)
             var contentString = `
             <h2>${client[0]}</h2>
