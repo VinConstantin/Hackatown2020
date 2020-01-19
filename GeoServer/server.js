@@ -44,7 +44,8 @@ io.on('connection', function(socket) {
         var feature = inside.feature(map, [lng, lat])
         if (feature != -1) {
             toPay.add(socket.id)
-            clients.get(socket.id).cost = feature.properties.cost
+            clients.get(socket.id).cost = parseInt(feature.properties.cost)
+            io.in('admins').emit('userType', [toPay.size, clients.size - toPay.size])
         }
         cb(feature == -1 ? -1 : feature.properties.cost, clients.get(socket.id).total, feature == -1 ? "": feature.properties.name)
         io.sockets.in('admins').emit('updateMap', socket.id, lng, lat);
@@ -68,6 +69,7 @@ io.on('connection', function(socket) {
 
     socket.on('joinAdmin', () => {
         socket.join('admins')
+        io.in('admins').emit('userType', [toPay.size, clients.size - toPay.size])
     })
 
     socket.on('saveGeo', (data) => {

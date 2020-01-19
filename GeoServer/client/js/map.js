@@ -70,7 +70,7 @@ function initMap() {
         center.lat /= clients.length == 0 ? 1 : clients.length;
         center.lng /= clients.length == 0 ? 1 : clients.length;
 
-        map = new google.maps.Map(document.getElementById('map'), {zoom: 6, center: center});
+        map = new google.maps.Map(document.getElementById('map'), {zoom: 10, center: center});
         updateClients(clients)
     })
     socket.emit('getRoads', (geoJSON) => {
