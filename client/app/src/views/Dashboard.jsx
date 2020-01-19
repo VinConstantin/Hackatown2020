@@ -23,6 +23,12 @@ import {
 
 
 class Dashboard extends React.Component {
+  state = {
+    currentPrice: 0,
+    totalPrice: 0,
+    balance: 0
+  }
+
   componentDidMount() {
     document.getElementById("content").addEventListener("update", this.handleUpdate);
   }
@@ -31,17 +37,27 @@ class Dashboard extends React.Component {
     document.getElementById("content").removeEventListener("update", this.handleUpdate);
   }
 
-  handleUpdate = (event) => {
-    window.mapComponent.update();
-    console.log("update dashboard", event);
+  handleUpdate = (event ) => {
+    let price = event.detail.price;
+    let total = event.detail.total;
+    let lat = event.detail.lat;
+    let long = event.detail.long;
+
+    this.setState({
+      currentPrice: price,
+      totalPrice: total,
+    })
+
+    window.mapComponent.update(lat, long);
   }
 
   render() {
+    
     return (
       <>
         <div className="content" id="content">
           <Row>
-            <Col lg="3" md="6" sm="6">
+            <Col lg="4" md="6" sm="6">
               <Card className="card-stats">
                 <CardBody>
                   <Row>
@@ -52,8 +68,8 @@ class Dashboard extends React.Component {
                     </Col>
                     <Col md="8" xs="7">
                       <div className="numbers">
-                        <p className="card-category">Current time</p>
-                        <CardTitle tag="cBilling">1h50</CardTitle>
+                        <p className="card-category">Current zone price</p>
+                        <CardTitle tag="cBilling">{this.state.currentPrice} $</CardTitle>
                         <p />
                       </div>
                     </Col>
@@ -63,7 +79,7 @@ class Dashboard extends React.Component {
                 </CardFooter>
               </Card>
             </Col>
-            <Col lg="3" md="6" sm="6">
+            <Col lg="4" md="6" sm="6">
               <Card className="card-stats">
                 <CardBody>
                   <Row>
@@ -74,8 +90,8 @@ class Dashboard extends React.Component {
                     </Col>
                     <Col md="8" xs="7">
                       <div className="numbers">
-                        <p className="card-category">current billing</p>
-                        <CardTitle tag="p">20,50 $</CardTitle>
+                        <p className="card-category">Total session payment</p>
+                        <CardTitle tag="p">{this.state.totalPrice} $</CardTitle>
                         <p />
                       </div>
                     </Col>
@@ -86,7 +102,7 @@ class Dashboard extends React.Component {
               </Card>
             </Col>
 
-            <Col lg="3" md="6" sm="6">
+            <Col lg="4" md="6" sm="6">
               <Card className="card-stats">
                 <CardBody>
                   <Row>
@@ -97,31 +113,8 @@ class Dashboard extends React.Component {
                     </Col>
                     <Col md="8" xs="7">
                       <div className="numbers">
-                        <p className="card-category">Total billing</p>
-                        <CardTitle tag="cBilling">120,00$</CardTitle>
-                        <p />
-                      </div>
-                    </Col>
-                  </Row>
-                </CardBody>
-                <CardFooter>
-                </CardFooter>
-              </Card>
-            </Col>
-
-            <Col lg="3" md="6" sm="6">
-              <Card className="card-stats">
-                <CardBody>
-                  <Row>
-                    <Col md="4" xs="5">
-                      <div className="icon-big text-center icon-warning">
-                        <i className="nc-icon nc-money-coins text-warning" />
-                      </div>
-                    </Col>
-                    <Col md="8" xs="7">
-                      <div className="numbers">
-                        <p className="card-category">Credit left</p>
-                        <CardTitle tag="cBilling">45,50$</CardTitle>
+                        <p className="card-category">Balance</p>
+                        <CardTitle tag="cBilling">{this.state.balance} $</CardTitle>
                         <p />
                       </div>
                     </Col>

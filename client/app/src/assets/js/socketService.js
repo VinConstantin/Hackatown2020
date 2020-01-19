@@ -1,14 +1,19 @@
 import openSocket from 'socket.io-client';
+import {sendTransaction} from 'assets/js/IOTA'
 
 var socket;
 var dashboard;
 
 export const Run = ()=>{
-    const URL = "http://localhost:4000"
+    const URL = "http://25.8.242.4:4000"
     socket = openSocket(URL);
+    getPosition()
+    //update position every 20s
+    setInterval(getPosition, 5000);
 
-    //update position every 30s
-    setInterval(getPosition, 3000);
+    socket.on('pay', (price)=>{
+        console.log("PAY NOWW")
+    })
 }
 
 function getPosition(){
@@ -18,11 +23,12 @@ function getPosition(){
 function emitPosition(position){
     let lat = position.coords.latitude;
     let long = position.coords.longitude;
-    console.log(long +" , "+ lat)
-    socket.emit('checkCoords', long, lat, (price) => {
-        var event = new CustomEvent('update', { lat, long });
+    socket.emit('checkCoords', long, lat, (price, totalPayment) => {
+        
+        var event = new CustomEvent('update', {detail: {price: price, total: totalPayment, lat: lat, long: long}});
         document.getElementById("content").dispatchEvent(event);
-        console.log(price)
+        console.log(price + ' - ' + totalPayment)
+        //sendTransaction(price)
     })
 }
 

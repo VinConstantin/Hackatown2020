@@ -39,7 +39,6 @@ const MapWrapper = withScriptjs(
         
       }}
     >
-      <Marker position={{ lat: 40.748817, lng: -73.985428 }} />
     </GoogleMap>
   ))
 );
@@ -68,8 +67,8 @@ class Map extends React.Component {
     }), 1000)
   }
 
-  update(){
-    console.log("resettime")
+  update(lat, long){
+    
     this.setState({time: 0})
   }
   render() {
