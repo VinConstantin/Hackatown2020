@@ -64,6 +64,7 @@ io.on('connection', function(socket) {
     socket.on('disconnect', () => {
         console.log('socket ' + socket.id + ' left')
         socket.leaveAll()
+        io.sockets.in('admins').emit('clientQuit', socket.id)
         clients.delete(socket.id)
     });
 });
@@ -84,14 +85,13 @@ setInterval(() => {
 }, 60000)
 
 function executePyota() {
-    // exec('python ../pyota/check_iota-balance.py', (error, stdout, stderr) => {
-    //     if (error) {
-    //         console.error(`exec error: ${error}`);
-    //         return;
-    //     }
+    exec('python ../pyota/check_iota-balance.py', (error, stdout, stderr) => {
+        if (error) {
+            console.error(`exec error: ${error}`);
+            return;
+        }
         
-    //     let response = JSON.parse(stdout)
-    //     balance = response.balance
-    //     console.log('updated balance to ' + balance)
-    // })
+        let response = JSON.parse(stdout)
+        balance = response.balances[0]
+    })
 }

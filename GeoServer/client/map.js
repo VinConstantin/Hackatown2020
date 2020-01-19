@@ -11,8 +11,16 @@ socket.on('updateMap', (id, lng, lat) => {
     }
     else {
         socket.emit('getClients', (clients) => {
+            markers.clear()
             updateClients(clients)
         })
+    }
+})
+
+socket.on('clientQuit', (id) => {
+    if (markers.has(id)) {
+        markers.get(id).setMap(null)
+        markers.delete(id)
     }
 })
 
