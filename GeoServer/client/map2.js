@@ -7,10 +7,12 @@ var zoneType = document.getElementById("zoneType");
 var zoneCost = document.getElementById("zoneCost");
 var curSelect;
 
+const socket = io()
+
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 4,
-        center: {lat: -28, lng: 137} 
+        zoom: 10,
+        center: {lat: 45.45, lng: -73.45} 
     });
 
     map.data.loadGeoJson(jsonFile);
@@ -76,5 +78,8 @@ deleteBtn.onclick = function () {
 }
 saveBtn.onclick = function () {
     var geoOut;
-    map.data.toGeoJson(function(obj) {console.log(JSON.stringify(obj))});
+    map.data.toGeoJson((obj) => {
+        console.log(JSON.stringify(obj))
+        socket.emit('saveGeo', JSON.stringify(obj))
+    });
 }

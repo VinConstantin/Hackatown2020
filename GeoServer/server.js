@@ -15,7 +15,7 @@ var clients = new Map()
 //clients.set('b', {point: {lng: -73.76546859741211, lat: 45.44950396438697}, cost: 3, time: 4})
 
 
-var roadData = fs.readFileSync(__dirname + '/test.geojson')
+var roadData = JSON.parse(fs.readFileSync(__dirname + '/test.geojson').toString('utf8'))
 
 app.use(express.static(__dirname + '/client'))
 
@@ -40,7 +40,7 @@ io.on('connection', function(socket) {
             io.in('admins').emit('userOnline', clients.size);
         }
         clients.get(socket.id).point = {lng: lng, lat: lat};
-        var map = JSON.parse(roadData)
+        var map = roadData
         var feature = inside.feature(map, [lng, lat])
         if (feature != -1) {
             toPay.add(socket.id)
@@ -59,7 +59,7 @@ io.on('connection', function(socket) {
     })
 
     socket.on('getRoads', (cb) => {
-        cb(roadData.toString('utf8'))
+        cb(JSON.stringify(roadData))
     })
 
     socket.on('getBalance', (cb) => {
@@ -70,6 +70,13 @@ io.on('connection', function(socket) {
         socket.join('admins')
     })
 
+    socket.on('saveGeo', (data) => {
+        const newGeo = JSON.parse(data);
+        let features = roadData.features;
+        let newFeatures = features.concat(newGeo.features);
+        roadData.features = newFeatures;
+    })
+
     socket.on('disconnect', () => {
         console.log('socket ' + socket.id + ' left')
         socket.leaveAll()
@@ -77,6 +84,7 @@ io.on('connection', function(socket) {
         io.in('admins').emit('userOnline', clients.size);
         clients.delete(socket.id)
     });
+    
 });
 
 setInterval(() => {
