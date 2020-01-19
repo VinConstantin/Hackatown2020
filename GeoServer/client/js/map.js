@@ -78,7 +78,7 @@ function initMap() {
         features.forEach((feature) => {
             if (feature.getProperty('type') == "road")
                 map.data.overrideStyle(feature, {fillColor: 'DarkGray', strokeColor: 'DarkGray'})
-            else 
+            else if (feature.getProperty('type') == "parking")
                 map.data.overrideStyle(feature, {fillColor: 'HotPink', strokeColor: 'HotPink'})
         })
     })
