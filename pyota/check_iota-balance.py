@@ -11,11 +11,12 @@ devnetNode = "https://nodes.devnet.iota.org:443"
 # Initializing api
 api = iota.Iota(devnetNode, seed = seedReceiver)
 
-senderBalance = api.get_account_data(start = 0, stop = None)
+receiverBalance = api.get_balances(addresses=['BGNNNVGFPQZWKCFZJAOIAYRJBODEWFVDRWALOQZZEUHPKAFWTQPMBCIAPSCSVIWOSTYICTNCZDGRIXHGC'], threshold=100)
 
-for key, value in senderBalance.items():
-    if key == 'addresses' or key == 'bundles':
+for key, value in receiverBalance.items():
+    if key == 'references':
         for i in range(len(value)):
             value[i] = str(value[i])
 
-senderBalance_json = json.dumps(senderBalance)
+receiverBalance_json = json.dumps(receiverBalance)
+print(receiverBalance_json)
