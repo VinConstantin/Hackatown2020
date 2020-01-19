@@ -1,5 +1,5 @@
 var map;
-var jsonFile = "google.json";
+//var jsonFile = "google.json";
 var saveBtn = document.getElementById("saveBtn");
 var deleteBtn = document.getElementById("deleteBtn");
 var zoneName = document.getElementById("zoneName");
@@ -15,7 +15,10 @@ function initMap() {
         center: {lat: 45.45, lng: -73.45} 
     });
 
-    map.data.loadGeoJson(jsonFile);
+    socket.emit('getRoads', (geoJSON) => {
+        map.data.addGeoJson(JSON.parse(geoJSON));
+    })
+
 
     var drawingManager = new google.maps.drawing.DrawingManager({
         drawingMode: google.maps.drawing.OverlayType.MARKER,

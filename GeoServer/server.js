@@ -72,9 +72,8 @@ io.on('connection', function(socket) {
 
     socket.on('saveGeo', (data) => {
         const newGeo = JSON.parse(data);
-        let features = roadData.features;
-        let newFeatures = features.concat(newGeo.features);
-        roadData.features = newFeatures;
+        roadData = newGeo;
+        fs.writeFileSync(__dirname + '/test.geojson', JSON.stringify(newGeo))
     })
 
     socket.on('disconnect', () => {
