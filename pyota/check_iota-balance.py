@@ -1,4 +1,5 @@
 import iota
+import json
 from pprint import pprint
 
 # Seed for the webserver. 
@@ -10,11 +11,11 @@ devnetNode = "https://nodes.devnet.iota.org:443"
 # Initializing api
 api = iota.Iota(devnetNode, seed = seedReceiver)
 
-print("Checking for total balance. This may take some time...")
-
 senderBalance = api.get_account_data(start = 0, stop = None)
 
-print("It may take a while if there are multiple addresses")
-pprint(senderBalance)
+for key, value in senderBalance.items():
+    if key == 'addresses' or key == 'bundles':
+        for i in range(len(value)):
+            value[i] = str(value[i])
 
-print("The balance of IOTA tokens in the webserver is : " + str(senderBalance['balance']))
+senderBalance_json = json.dumps(senderBalance)
