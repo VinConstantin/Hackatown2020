@@ -47,7 +47,7 @@ io.on('connection', function(socket) {
             clients.get(socket.id).cost = parseInt(feature.properties.cost)
             io.in('admins').emit('userType', [toPay.size, clients.size - toPay.size])
         }
-        cb(feature == -1 ? -1 : feature.properties.cost, clients.get(socket.id).total, feature == -1 ? "": feature.properties.name)
+        cb(feature == -1 ? -1 : parseInt(feature.properties.cost), clients.get(socket.id).total, feature == -1 ? "": feature.properties.name)
         io.sockets.in('admins').emit('updateMap', socket.id, lng, lat);
     });
 
