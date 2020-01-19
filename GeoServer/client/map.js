@@ -11,6 +11,9 @@ socket.on('updateMap', (id, lng, lat) => {
     }
     else {
         socket.emit('getClients', (clients) => {
+            markers.forEach((val, key) => {
+                val.setMap(null)
+            });
             markers.clear()
             updateClients(clients)
         })

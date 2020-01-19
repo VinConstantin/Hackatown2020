@@ -532,4 +532,4 @@ setInterval(() => {
     socket.emit('checkCoords', arr[i][0], arr[i++][1], () => { })
     if (i == arr.length)
         i = 0;
-}, 5000)
+}, 1000)
