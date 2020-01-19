@@ -3,6 +3,7 @@
 const socket = io()
 let map;
 let markers = new Map()
+let chance = 10;
 
 socket.emit('joinAdmin');
 socket.on('updateMap', (id, lng, lat) => {
@@ -30,7 +31,7 @@ socket.on('clientQuit', (id) => {
 function updateClients(clients) {
     clients.forEach(client => {
         var image = {
-            url: 'car.png',
+            url: Math.floor(Math.random() * chance) == 1 ? 'good.gif' : 'car.png',
             anchor: new google.maps.Point(8, 8)
           };
         
