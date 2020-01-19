@@ -64,8 +64,8 @@ function initMap() {
             center.lat += client[1].point.lat;
             center.lng += client[1].point.lng;
         })
-        center.lat /= clients.length;
-        center.lng /= clients.length;
+        center.lat /= clients.length == 0 ? 1 : clients.length;
+        center.lng /= clients.length == 0 ? 1 : clients.length;
 
         map = new google.maps.Map(document.getElementById('map'), {zoom: 6, center: center});
         updateClients(clients)
