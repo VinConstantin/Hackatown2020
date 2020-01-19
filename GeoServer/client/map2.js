@@ -1,9 +1,16 @@
 var map;
 var jsonFile = "google.json";
+var saveBtn = document.getElementById("saveBtn");
+var deleteBtn = document.getElementById("deleteBtn");
+var zoneName = document.getElementById("zoneName");
+var zoneType = document.getElementById("zoneType");
+var zoneCost = document.getElementById("zoneCost");
+var curSelect;
+
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 4,
-        center: {lat: -28, lng: 137}
+        center: {lat: -28, lng: 137} 
     });
 
     map.data.loadGeoJson(jsonFile);
@@ -25,12 +32,49 @@ function initMap() {
         }));
         drawingManager.setDrawingMode(null);
         event.overlay.setMap(null);
-        map.data.toGeoJson(function(obj) {console.log(obj);});
     });
 
     map.data.addListener('click', function(event) {
         map.data.revertStyle();
         map.data.overrideStyle(event.feature, 
             {editable: 'true', draggable: 'true'});
+        zoneName.disabled = false;
+        zoneType.disabled = false;
+        zoneCost.disabled = false;
+        curSelect = event.feature;
+        console.log(curSelect);
+        if (curSelect.h.hasOwnProperty("name")) {
+            zoneName.value = curSelect.h.name;
+        } else {
+            zoneName.value = '';
+        }
+        if (curSelect.h.hasOwnProperty("type")) {
+            zoneType.value = curSelect.h.type;
+        } else {
+            zoneType.value = '';
+        }
+        if (curSelect.h.hasOwnProperty("cost")) {
+            zoneCost.value = curSelect.h.cost;
+        }   else {
+            zoneCost.value = '';
+        }
     });
+}
+
+zoneName.onchange = function () {
+    console.log(curSelect.h.name);
+    curSelect.h.name = zoneName.value;
+}
+zoneType.onchange = function () {
+    curSelect.h.type = zoneType.value;
+}
+zoneCost.onchange = function () {
+    curSelect.h.cost = zoneCost.value;
+}
+deleteBtn.onclick = function () {
+    map.data.remove(curSelect);
+}
+saveBtn.onclick = function () {
+    var geoOut;
+    map.data.toGeoJson(function(obj) {console.log(JSON.stringify(obj))});
 }

@@ -20,17 +20,39 @@
     </nav>
     <section class="container-fluid">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-9">
           <div id="map"></div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+
+          <button id="deleteBtn">Delete</button>
+          <table style="width:100%">
+          <tr>
+              <th>Name</th>
+              <td><input type="text" id="zoneName" disabled></td>
+          </tr>
+          <tr>
+              <th>Type</th>
+              <td>
+                  <select id="zoneType" disabled>
+                      <option value="road">Road</option>
+                      <option value="parking">Parking</option>
+                  </select>
+              </td>
+          </tr>
+          <tr>
+              <th>Cost ($/min)</th>
+              <td><input type="number" id="zoneCost" disabled></td>
+          </tr>
+          </table>
+          <button id="saveBtn">Save</button>
         </div>
       </div>
     </section>
     
     <script src="/socket.io/socket.io.js"></script>
     <script src='./map2.js'></script>
-    <<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLMM_sm9suvkQ5FfHhyjd6R7mhpnHZrNk&libraries=drawing&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLMM_sm9suvkQ5FfHhyjd6R7mhpnHZrNk&libraries=drawing&callback=initMap"
     async defer></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

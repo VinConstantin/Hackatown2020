@@ -37,6 +37,7 @@ io.on('connection', function(socket) {
     socket.on('checkCoords', function(lng, lat, cb) {
         if (!clients.has(socket.id)) {
             clients.set(socket.id, {point: {lng: 0, lat: 0}, cost: 0, time: 0, total: 0})
+            io.in('admins').emit('userOnline', clients.size);
         }
         clients.get(socket.id).point = {lng: lng, lat: lat};
         var map = JSON.parse(roadData)
@@ -48,6 +49,10 @@ io.on('connection', function(socket) {
         cb(feature == -1 ? -1 : feature.properties.cost, clients.get(socket.id).total)
         io.sockets.in('admins').emit('updateMap', socket.id, lng, lat);
     });
+
+    socket.on('getUserOnline', (cb) => {
+        cb(clients.size);
+    })
 
     socket.on('getClients', (cb) => {
         cb(Array.from(clients))
@@ -69,6 +74,7 @@ io.on('connection', function(socket) {
         console.log('socket ' + socket.id + ' left')
         socket.leaveAll()
         io.sockets.in('admins').emit('clientQuit', socket.id)
+        io.in('admins').emit('userOnline', clients.size);
         clients.delete(socket.id)
     });
 });
@@ -97,5 +103,6 @@ function executePyota() {
         
         let response = JSON.parse(stdout)
         balance = response.balances[0]
+        io.in('admins').emit('balance', balance);
     })
 }
