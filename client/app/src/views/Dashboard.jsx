@@ -60,10 +60,20 @@ class Dashboard extends React.Component {
   }
 
   updateBalance(value){
-    console.log("balance : "+value)
-    this.setState({
-      balance: this.convertToCAN(value)
-    })
+    
+    if(value == null || value == "" || isNaN(value)){
+      console.log(value);
+      this.setState({
+
+        balance: `...`
+      })
+    }
+    else{
+      console.log(value);
+      this.setState({
+        balance: this.convertToCAN(value)
+      })
+    }
   }
 
   convertToCAN(value){
