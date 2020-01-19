@@ -9,6 +9,28 @@ var curSelect;
 
 const socket = io()
 
+var pieData = {
+    datasets: [{
+        data: [10, 20, 30],
+        backgroundColor: [
+            'DarkGrey',
+            'HotPink',
+            'LightGrey',
+        ]
+    }],
+    labels: [
+        'Roads',
+        'Parking',
+        'Other'
+    ]
+};
+
+var ctx = document.getElementById('myChart').getContext('2d');
+var myDoughnutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: pieData
+});
+
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
@@ -16,7 +38,14 @@ function initMap() {
     });
 
     socket.emit('getRoads', (geoJSON) => {
-        map.data.addGeoJson(JSON.parse(geoJSON));
+        let features = map.data.addGeoJson(JSON.parse(geoJSON));
+        features.forEach((feature) => {
+            if (feature.getProperty('type') == "road")
+                map.data.overrideStyle(feature, {fillColor: 'DarkGray', strokeColor: 'DarkGray'})
+            else 
+                map.data.overrideStyle(feature, {fillColor: 'HotPink', strokeColor: 'HotPink'})
+        })
+        updatePie()
     })
 
 
@@ -40,7 +69,10 @@ function initMap() {
     });
 
     map.data.addListener('click', function(event) {
-        map.data.revertStyle();
+        if (curSelect != undefined) {
+            map.data.overrideStyle(curSelect, {editable: false, draggable: false});
+        }
+        //map.data.revertStyle();
         map.data.overrideStyle(event.feature, 
             {editable: 'true', draggable: 'true'});
         zoneName.disabled = false;
@@ -72,12 +104,14 @@ zoneName.onchange = function () {
 }
 zoneType.onchange = function () {
     curSelect.h.type = zoneType.value;
+    updatePie()
 }
 zoneCost.onchange = function () {
     curSelect.h.cost = zoneCost.value;
 }
 deleteBtn.onclick = function () {
     map.data.remove(curSelect);
+    updatePie()
 }
 saveBtn.onclick = function () {
     var geoOut;
@@ -85,4 +119,17 @@ saveBtn.onclick = function () {
         console.log(JSON.stringify(obj))
         socket.emit('saveGeo', JSON.stringify(obj))
     });
+}
+
+function updatePie() {
+    console.log(map.data)
+    dataArray = [0,0,0]
+    map.data.forEach(function(feature){
+        tType = feature.getProperty("type")
+        if (tType == "road") {dataArray[0]++}
+        else if (tType == "parking") {dataArray[1]++}
+        else {dataArray[2]++}
+    })
+    myDoughnutChart.data.datasets[0].data = dataArray;
+    myDoughnutChart.update();
 }

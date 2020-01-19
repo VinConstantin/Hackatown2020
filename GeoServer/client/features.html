@@ -113,6 +113,7 @@
                     <td><input type="number" class="form-control" id="zoneCost" disabled></td>
                 </tr>
                 </table>
+                <canvas id="myChart" width="400" height="400"></canvas>
                 <button class="btn btn-success" id="saveBtn">Save</button>
               </div>
           
@@ -181,8 +182,9 @@
   <!-- Page level custom scripts -->
   <script src="js/demo/datatables-demo.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-    <script src='./map2.js'></script>
+    <script src='js/map2.js'></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLMM_sm9suvkQ5FfHhyjd6R7mhpnHZrNk&libraries=drawing&callback=initMap"
     async defer></script>
 
