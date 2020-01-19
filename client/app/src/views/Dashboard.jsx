@@ -13,20 +13,26 @@ import {
   Row,
   Col
 } from "reactstrap";
-import Map from "./Map"
-// core components
-import {
-  dashboard24HoursPerformanceChart,
-  dashboardEmailStatisticsChart,
-  dashboardNASDAQChart
-} from "variables/charts.jsx";
-
+import GoogleMapsContainer from "./GoogleMapsContainer"
+import {getBalance} from "assets/js/IOTA"
 
 class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    window.dashboard = this;
+
+    setTimeout(() => {
+      getBalance();
+    }, 1000);
+    
+  }
+
   state = {
     currentPrice: 0,
     totalPrice: 0,
-    balance: 0
+    balance: 0,
+    zone: "No zone"
   }
 
   componentDidMount() {
@@ -42,13 +48,26 @@ class Dashboard extends React.Component {
     let total = event.detail.total;
     let lat = event.detail.lat;
     let long = event.detail.long;
+    let zone = event.detail.zone;
 
     this.setState({
-      currentPrice: price,
-      totalPrice: total,
+      currentPrice: this.convertToCAN(price),
+      totalPrice: this.convertToCAN(total),
+      zone: zone
     })
 
     window.mapComponent.update(lat, long);
+  }
+
+  updateBalance(value){
+    console.log("balance : "+value)
+    this.setState({
+      balance: this.convertToCAN(value)
+    })
+  }
+
+  convertToCAN(value){
+    return (value * 0.322176).toFixed(2);
   }
 
   render() {
@@ -57,19 +76,19 @@ class Dashboard extends React.Component {
       <>
         <div className="content" id="content">
           <Row>
-            <Col lg="4" md="6" sm="6">
+          <Col lg="3" md="6" sm="6">
               <Card className="card-stats">
-                <CardBody>
+                <CardBody style={{height: 120}}>
                   <Row>
                     <Col md="4" xs="5">
-                      <div className="icon-big text-center icon-warning">
-                        <i className="nc-icon nc-watch-time text-warning" />
+                      <div className="icon-big text-center icon-info">
+                        <i className="nc-icon nc-map-big text-info" />
                       </div>
                     </Col>
                     <Col md="8" xs="7">
                       <div className="numbers">
-                        <p className="card-category">Current zone price</p>
-                        <CardTitle tag="cBilling">{this.state.currentPrice} $</CardTitle>
+                        <p className="card-category">Current Zone</p>
+                        <CardTitle>{this.state.zone} </CardTitle>
                         <p />
                       </div>
                     </Col>
@@ -79,9 +98,31 @@ class Dashboard extends React.Component {
                 </CardFooter>
               </Card>
             </Col>
-            <Col lg="4" md="6" sm="6">
+            <Col lg="3" md="6" sm="6">
               <Card className="card-stats">
-                <CardBody>
+                <CardBody style={{height: 120}}>
+                  <Row>
+                    <Col md="4" xs="5">
+                      <div className="icon-big text-center icon-warning">
+                        <i className="nc-icon nc-watch-time text-warning" />
+                      </div>
+                    </Col>
+                    <Col md="8" xs="7">
+                      <div className="numbers">
+                        <p className="card-category">Current zone price</p>
+                        <CardTitle>{this.state.currentPrice} $/min</CardTitle>
+                        <p />
+                      </div>
+                    </Col>
+                  </Row>
+                </CardBody>
+                <CardFooter>
+                </CardFooter>
+              </Card>
+            </Col>
+            <Col lg="3" md="6" sm="6">
+              <Card className="card-stats">
+                <CardBody style={{height: 120}}>
                   <Row>
                     <Col md="4" xs="5">
                       <div className="icon-big text-center icon-warning">
@@ -102,19 +143,19 @@ class Dashboard extends React.Component {
               </Card>
             </Col>
 
-            <Col lg="4" md="6" sm="6">
+            <Col lg="3" md="6" sm="6">
               <Card className="card-stats">
-                <CardBody>
+                <CardBody style={{height: 120}}>
                   <Row>
                     <Col md="4" xs="5">
-                      <div className="icon-big text-center icon-warning">
-                        <i className="nc-icon nc-money-coins text-warning" />
+                      <div className="icon-big text-center icon-danger">
+                        <i className="nc-icon nc-single-copy-04 text-danger" />
                       </div>
                     </Col>
                     <Col md="8" xs="7">
                       <div className="numbers">
                         <p className="card-category">Balance</p>
-                        <CardTitle tag="cBilling">{this.state.balance} $</CardTitle>
+                        <CardTitle>{this.state.balance} $</CardTitle>
                         <p />
                       </div>
                     </Col>
@@ -127,7 +168,7 @@ class Dashboard extends React.Component {
           </Row>
           <Row>
             <Col md="12">
-              <Map/>
+              <GoogleMapsContainer/>
             </Col>
           </Row>
         </div>
