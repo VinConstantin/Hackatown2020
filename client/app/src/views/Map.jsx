@@ -25,7 +25,9 @@ import {
   Marker
 } from "react-google-maps";
 // reactstrap components
-import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
+import { Card, CardHeader, CardBody, Row, Col ,  
+  CardFooter,
+  CardTitle,} from "reactstrap";
 
 const MapWrapper = withScriptjs(
   withGoogleMap(props => (
@@ -34,137 +36,7 @@ const MapWrapper = withScriptjs(
       defaultCenter={{ lat: 40.748817, lng: -73.985428 }}
       defaultOptions={{
         scrollwheel: false, //we disable de scroll over the map, it is a really annoing when you scroll through page
-        styles: [
-          {
-            featureType: "water",
-            stylers: [
-              {
-                saturation: 43
-              },
-              {
-                lightness: -11
-              },
-              {
-                hue: "#0088ff"
-              }
-            ]
-          },
-          {
-            featureType: "road",
-            elementType: "geometry.fill",
-            stylers: [
-              {
-                hue: "#ff0000"
-              },
-              {
-                saturation: -100
-              },
-              {
-                lightness: 99
-              }
-            ]
-          },
-          {
-            featureType: "road",
-            elementType: "geometry.stroke",
-            stylers: [
-              {
-                color: "#808080"
-              },
-              {
-                lightness: 54
-              }
-            ]
-          },
-          {
-            featureType: "landscape.man_made",
-            elementType: "geometry.fill",
-            stylers: [
-              {
-                color: "#ece2d9"
-              }
-            ]
-          },
-          {
-            featureType: "poi.park",
-            elementType: "geometry.fill",
-            stylers: [
-              {
-                color: "#ccdca1"
-              }
-            ]
-          },
-          {
-            featureType: "road",
-            elementType: "labels.text.fill",
-            stylers: [
-              {
-                color: "#767676"
-              }
-            ]
-          },
-          {
-            featureType: "road",
-            elementType: "labels.text.stroke",
-            stylers: [
-              {
-                color: "#ffffff"
-              }
-            ]
-          },
-          {
-            featureType: "poi",
-            stylers: [
-              {
-                visibility: "off"
-              }
-            ]
-          },
-          {
-            featureType: "landscape.natural",
-            elementType: "geometry.fill",
-            stylers: [
-              {
-                visibility: "on"
-              },
-              {
-                color: "#b8cb93"
-              }
-            ]
-          },
-          {
-            featureType: "poi.park",
-            stylers: [
-              {
-                visibility: "on"
-              }
-            ]
-          },
-          {
-            featureType: "poi.sports_complex",
-            stylers: [
-              {
-                visibility: "on"
-              }
-            ]
-          },
-          {
-            featureType: "poi.medical",
-            stylers: [
-              {
-                visibility: "on"
-              }
-            ]
-          },
-          {
-            featureType: "poi.business",
-            stylers: [
-              {
-                visibility: "simplified"
-              }
-            ]
-          }
-        ]
+        
       }}
     >
       <Marker position={{ lat: 40.748817, lng: -73.985428 }} />
@@ -173,32 +45,60 @@ const MapWrapper = withScriptjs(
 );
 
 class Map extends React.Component {
+  state = {
+    time: 0
+  }
+
+  constructor(){
+    super();
+    window.mapComponent = this;
+  }
+  
+  componentDidMount() {
+    this.tick();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId);
+  }
+    
+  tick() {
+    this.timer = setInterval(() => this.setState({
+      time: this.state.time + 1
+    }), 1000)
+  }
+
+  update(){
+    console.log("resettime")
+    this.setState({time: 0})
+  }
   render() {
     return (
       <>
-        <div className="content">
-          <Row>
-            <Col md="12">
-              <Card>
-                <CardHeader>Google Maps</CardHeader>
-                <CardBody>
-                  <div
-                    id="map"
-                    className="map"
-                    style={{ position: "relative", overflow: "hidden" }}
-                  >
-                    <MapWrapper
-                      googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLMM_sm9suvkQ5FfHhyjd6R7mhpnHZrNk"
-                      loadingElement={<div style={{ height: `100%` }} />}
-                      containerElement={<div style={{ height: `100%` }} />}
-                      mapElement={<div style={{ height: `100%` }} />}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle tag="h5">Curent position</CardTitle>
+            <p className="card-category">Your position in real time</p>
+          </CardHeader>
+          <CardBody>
+            <div id="map"
+                className="map"
+                style={{ position: "relative", overflow: "hidden" }} >
+                <MapWrapper
+                  googleMapURL="https://maps.googleapis.com/maps/api/js?key= - AIzaSyCLMM_sm9suvkQ5FfHhyjd6R7mhpnHZrNk"
+                  loadingElement={<div style={{ height: `100%` }} />}
+                  containerElement={<div style={{ height: `100%` }} />}
+                  mapElement={<div style={{ height: `100%` }} />}
+                />
+              </div>
+          </CardBody>
+          <CardFooter>
+            <hr />
+            <div className="stats">
+              <i className="fa fa-history" /> Updated {this.state.time} seconds ago
+            </div>
+          </CardFooter>
+        </Card>
       </>
     );
   }
