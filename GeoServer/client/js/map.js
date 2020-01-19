@@ -76,7 +76,10 @@ function initMap() {
     socket.emit('getRoads', (geoJSON) => {
         let features = map.data.addGeoJson(JSON.parse(geoJSON))
         features.forEach((feature) => {
-            map.data.overrideStyle(feature, {fillColor: 'DarkGray', strokeColor: 'DarkGray'})
+            if (feature.getProperty('type') == "road")
+                map.data.overrideStyle(feature, {fillColor: 'DarkGray', strokeColor: 'DarkGray'})
+            else 
+                map.data.overrideStyle(feature, {fillColor: 'HotPink', strokeColor: 'HotPink'})
         })
     })
 }

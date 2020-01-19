@@ -46,7 +46,7 @@ io.on('connection', function(socket) {
             toPay.add(socket.id)
             clients.get(socket.id).cost = feature.properties.cost
         }
-        cb(feature == -1 ? -1 : feature.properties.cost, clients.get(socket.id).total)
+        cb(feature == -1 ? -1 : feature.properties.cost, clients.get(socket.id).total, feature == -1 ? "": feature.properties.name)
         io.sockets.in('admins').emit('updateMap', socket.id, lng, lat);
     });
 
