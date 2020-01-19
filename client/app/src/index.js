@@ -36,6 +36,7 @@ ReactDOM.render(
     <Switch>
       <Route path="/user" render={props => <UserLayout {...props} />} />
       <Redirect to="/user/dashboard" />
+
     </Switch>
   </Router>,
   document.getElementById("root")

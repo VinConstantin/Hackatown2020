@@ -17,7 +17,7 @@
 
 */
 import Dashboard from "views/Dashboard.jsx";
-import Maps from "views/Map.jsx";
+import History from "views/History";
 
 var routes = [
   {
@@ -26,13 +26,6 @@ var routes = [
     icon: "nc-icon nc-bank",
     component: Dashboard,
     layout: "/user"
-  },
-  {
-    path: "/maps",
-    name: "Maps",
-    icon: "nc-icon nc-pin-3",
-    component: Maps,
-    layout: "/user"
-  },
+  }
 ];
 export default routes;
