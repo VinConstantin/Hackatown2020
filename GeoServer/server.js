@@ -23,6 +23,10 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/client/index.html')
 });
 
+app.get('/features', function(req, res) {
+    res.sendFile(__dirname + '/client/page2.html')
+});
+
 http.listen(4000, function() {
     console.log('listening on *:4000');
 });
