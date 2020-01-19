@@ -105,6 +105,10 @@ zoneName.onchange = function () {
 }
 zoneType.onchange = function () {
     curSelect.h.type = zoneType.value;
+    if (curSelect.getProperty('type') == "road")
+        map.data.overrideStyle(curSelect, {fillColor: 'DarkGray', strokeColor: 'DarkGray'})
+    else if (curSelect.getProperty('type') == "parking")
+        map.data.overrideStyle(curSelect, {fillColor: 'HotPink', strokeColor: 'HotPink'})
     updatePie()
 }
 zoneCost.onchange = function () {
