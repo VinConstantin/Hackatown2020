@@ -18,7 +18,7 @@
     "iota.lib.js": "^0.5.2",
     "mysql": "^2.17.1",
     "net": "^1.0.2",
-    "node-sass": "4.12.0",
+    "node-sass": "4.13.1",
     "perfect-scrollbar": "1.4.0",
     "react": "16.8.6",
     "react-chartjs-2": "2.7.6",
